@@ -1,0 +1,11 @@
+name: Run CI checks
+
+on: 
+  pull_request:
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo to console
+        run: echo "Running fake CI Checks job"
