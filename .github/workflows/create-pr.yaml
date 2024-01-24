@@ -31,6 +31,7 @@ jobs:
             --body "pr body here" \
             --base "main" \
             --head "$TIMESTAMP"
+          gh workflow run ci.yaml --ref "$TIMESTAMP"
 
 # notes: 
 # You must select "Allow GitHub Actions to create and approve pull requests" under Settings > Actions > General
