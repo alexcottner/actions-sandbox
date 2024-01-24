@@ -3,6 +3,7 @@ name: Run scheduled jobs
 on:
   schedule:
     - cron: '10,25,40,55 * * * *'
+  workflow_dispatch:
 
 jobs:
   make-arbitrary-pr:
@@ -37,3 +38,4 @@ jobs:
 
 # notes: 
 # You must select "Allow GitHub Actions to create and approve pull requests" under Settings > Actions > General
+# You must explicitely require checks on PRs before allowing them to be merged under Settings > Branches > Require status checks to pass before merging
