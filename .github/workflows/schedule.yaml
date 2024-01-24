@@ -1,0 +1,33 @@
+name: Run scheduled jobs
+
+on:
+  schedule:
+    - cron: '5 * * * *'
+
+jobs:
+  make-arbitrary-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      checks: write
+      actions: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      
+      - name: Make arbitrary commit and PR
+        run: |
+          TIMESTAMP=$(date +"%Y-%m-%d-%H-%M")
+          echo "a random file" > $TIMESTAMP.txt
+          git config user.name "github-actions[bot]"
+          git cofig user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$TIMESTAMP"
+          git commit -am "Arbitrary file update at $TIMESTAMP"
+          git push origin "$TIMESTAMP"
+          gh pr create \
+            -- title "$TIMESTAMP" \
+            -- body "" \
+            -- base "main" \
+            -- head "$TIMESTAMP" \
+            -- label "arbitrary PR creation"
