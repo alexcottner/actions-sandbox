@@ -1,4 +1,4 @@
-name: Run scheduled jobs
+name: Run create-pr
 
 on:
   repository_dispatch:
