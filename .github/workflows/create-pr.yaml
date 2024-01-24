@@ -1,4 +1,4 @@
-name: Run CI checks
+name: Create PR
 
 on: 
   workflow_dispatch:
