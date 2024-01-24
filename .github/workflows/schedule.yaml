@@ -12,6 +12,7 @@ jobs:
       actions: write
       pull-requests: write
       contents: write
+      checks: write
 
     steps:
       - name: Checkout repo
