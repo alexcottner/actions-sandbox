@@ -8,31 +8,9 @@ jobs:
   make-arbitrary-pr:
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: write
-      checks: write
       actions: write
-      contents: write
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      
-      - name: Make arbitrary commit and PR
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Call create-pr workflow
         run: |
-          TIMESTAMP=$(date +"%Y-%m-%d-%H-%M")
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$TIMESTAMP"
-          echo "a random file" > $TIMESTAMP.txt
-          git add $TIMESTAMP.txt
-          git commit -m "Arbitrary file update at $TIMESTAMP"
-          git push origin "$TIMESTAMP"
-          gh pr create \
-            --title "$TIMESTAMP - scheduled pr" \
-            --body "pr body here" \
-            --base "main" \
-            --head "$TIMESTAMP"
-          gh workflow run ci.yaml --ref "$TIMESTAMP"
-
+          gh workflow run create-pr.yaml --ref "main"
