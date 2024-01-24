@@ -2,7 +2,7 @@ name: Run scheduled jobs
 
 on:
   schedule:
-    - cron: '5 * * * *'
+    - cron: '10,25,40,55 * * * *'
 
 jobs:
   make-arbitrary-pr:
@@ -11,23 +11,28 @@ jobs:
       pull-requests: write
       checks: write
       actions: write
+      contents: write
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
       
       - name: Make arbitrary commit and PR
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TIMESTAMP=$(date +"%Y-%m-%d-%H-%M")
-          echo "a random file" > $TIMESTAMP.txt
           git config user.name "github-actions[bot]"
-          git cofig user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$TIMESTAMP"
-          git commit -am "Arbitrary file update at $TIMESTAMP"
+          echo "a random file" > $TIMESTAMP.txt
+          git add $TIMESTAMP.txt
+          git commit -m "Arbitrary file update at $TIMESTAMP"
           git push origin "$TIMESTAMP"
           gh pr create \
-            -- title "$TIMESTAMP" \
-            -- body "" \
-            -- base "main" \
-            -- head "$TIMESTAMP" \
-            -- label "arbitrary PR creation"
+            --title "$TIMESTAMP - scheduled pr" \
+            --body "pr body here" \
+            --base "main" \
+            --head "$TIMESTAMP"
+          gh workflow run ci.yaml --ref "$TIMESTAMP"
+
