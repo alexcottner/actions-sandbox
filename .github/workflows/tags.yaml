@@ -4,10 +4,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  echo:
+  tags:
     runs-on: ubuntu-latest
     steps:
-      - name: echo to console
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: do tag stuff
         run: |
             git fetch --tags
             git describe --tags --abbrev=4
