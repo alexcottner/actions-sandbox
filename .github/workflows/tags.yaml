@@ -1,0 +1,13 @@
+name: Tags experiments
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo to console
+        run: |
+            git fetch --tags
+            git describe --tags --abbrev=4
