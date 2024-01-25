@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
+        with: 
+          fetch-depth: 0
         uses: actions/checkout@v4
 
       - name: do tag stuff
